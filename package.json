@@ -16,6 +16,11 @@
     "test": "xo && ava",
     "build": "webpack"
   },
+  "xo": {
+    "ignores": [
+      "umd.js"
+    ]
+  },
   "files": [
     "index.js",
     "umd.js"

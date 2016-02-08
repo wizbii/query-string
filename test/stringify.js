@@ -17,7 +17,7 @@ test('URI encode', t => {
 });
 
 test('handle array value', t => {
-	t.same(fn.stringify({abc: 'abc', foo: ['bar', 'baz']}), 'abc=abc&foo=bar&foo=baz');
+	t.same(fn.stringify({abc: 'abc', foo: ['bar', 'baz']}), 'abc=abc&foo%5B%5D=bar&foo%5B%5D=baz');
 });
 
 test('handle empty array value', t => {

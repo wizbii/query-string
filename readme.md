@@ -2,7 +2,14 @@
 
 > Parse and stringify URL [query strings](http://en.wikipedia.org/wiki/Query_string)
 
-Note: this fork brings umd support to [sindresorhus](https://github.com/sindresorhus)/[query-string](https://github.com/sindresorhus/query-string)
+
+## Divergences
+
+This fork of [sindresorhus](https://github.com/sindresorhus)/[query-string](https://github.com/sindresorhus/query-string) introduces a couple of changes.
+
+1. **UMD**: there's now a bundled and UMD compatible version available along with the CommonJS one (the file is named `umd.js`)
+2. **Array Notation**: the original array notation was `?foo=bar&foo=baz` and is now `?foo[]=bar&foo[]=baz`
+
 
 ## Install
 

@@ -25,16 +25,23 @@ exports.parse = function (str) {
 
 		key = decodeURIComponent(key);
 
+		var arrayRegexp = /\[]$/;
+		var isArray = arrayRegexp.test(key);
+
 		// missing `=` should be `null`:
 		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
 		val = val === undefined ? null : decodeURIComponent(val);
 
-		if (!ret.hasOwnProperty(key)) {
-			ret[key] = val;
-		} else if (Array.isArray(ret[key])) {
+		if (isArray) {
+			key = key.replace(arrayRegexp, '');
+
+			if (!Array.isArray(ret[key])) {
+				ret[key] = [];
+			}
+
 			ret[key].push(val);
 		} else {
-			ret[key] = [ret[key], val];
+			ret[key] = val;
 		}
 
 		return ret;
@@ -55,7 +62,7 @@ exports.stringify = function (obj) {
 
 		if (Array.isArray(val)) {
 			return val.sort().map(function (val2) {
-				return strictUriEncode(key) + '=' + strictUriEncode(val2);
+				return strictUriEncode(key + '[]') + '=' + strictUriEncode(val2);
 			}).join('&');
 		}
 

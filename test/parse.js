@@ -10,7 +10,7 @@ test('query strings starting with a `#`', t => {
 });
 
 test('query strings starting with a `&`', t => {
-	t.same(fn.parse('&foo=bar&foo=baz'), {foo: ['bar', 'baz']});
+	t.same(fn.parse('&foo%5B%5D=bar&foo%5B%5D=baz'), {foo: ['bar', 'baz']});
 });
 
 test('parse a query string', t => {
@@ -38,8 +38,12 @@ test('handle `+` correctly', t => {
 	t.same(fn.parse('foo+faz=bar+baz++'), {'foo faz': 'bar baz  '});
 });
 
-test('handle multiple of the same key', t => {
-	t.same(fn.parse('foo=bar&foo=baz'), {foo: ['bar', 'baz']});
+test('last value overwrite existing values', t => {
+	t.same(fn.parse('foo=bar&foo=baz'), {foo: 'baz'});
+});
+
+test('handle array notation', t => {
+	t.same(fn.parse('foo%5B%5D=bar&foo%5B%5D=baz'), {foo: ['bar', 'baz']});
 });
 
 test('query strings params including embedded `=`', t => {
