@@ -11,6 +11,11 @@ This fork of [sindresorhus](https://github.com/sindresorhus)/[query-string](http
 2. **Array Notation**: the original array notation was `?foo=bar&foo=baz` and is now `?foo[]=bar&foo[]=baz`
 
 
+### TODO
+
+* [ ] *Objects/Nesting: should be able to parse and stringify `{ foo: 'bar', quz: { baz: 'aze', bam: ['bim'] }}`*
+
+
 ## Install
 
 ```
