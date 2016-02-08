@@ -48,7 +48,7 @@ exports.parse = function parse(str) {
 	}, {});
 };
 
-exports.stringify = function stringify(obj) {
+exports.stringify = function stringify(obj, root) {
 	if (!obj) {
 		return '';
 	}
@@ -70,13 +70,17 @@ exports.stringify = function stringify(obj) {
 				return val
 					.sort()
 					.map(function (val2) {
-						return strictUriEncode(key + '[]') + '=' + strictUriEncode(val2);
+						return strictUriEncode(getKeyValue(key, root) + '[]') + '=' + strictUriEncode(val2);
 					})
 					.join('&')
 				;
 			}
 
-			return strictUriEncode(key) + '=' + strictUriEncode(val);
+			if (typeof val === 'object') {
+				return stringify(val, key);
+			}
+
+			return strictUriEncode(getKeyValue(key, root)) + '=' + strictUriEncode(val);
 		})
 		.filter(function (x) {
 			return x.length > 0;
@@ -84,3 +88,7 @@ exports.stringify = function stringify(obj) {
 		.join('&')
 	;
 };
+
+function getKeyValue(key, root) {
+	return root ? root + '[' + key + ']' : key;
+}

@@ -31,3 +31,13 @@ test('should not encode undefined values', t => {
 test('should encode null values as just a key', t => {
 	t.same(fn.stringify({xyz: null, abc: null, foo: 'baz'}), 'abc&foo=baz&xyz');
 });
+
+test('handle object notation', t => {
+	t.same(fn.stringify({foo: {bar: 'quz'}}), 'foo%5Bbar%5D=quz');
+	t.same(fn.stringify({foo: {bar: 'quz', baz: 'aze'}}), 'foo%5Bbar%5D=quz&foo%5Bbaz%5D=aze');
+	t.same(fn.stringify({foo: {bar: 'quz', baz: 'aze', qwe: ['bla']}}), 'foo%5Bbar%5D=quz&foo%5Bbaz%5D=aze&foo%5Bqwe%5D%5B%5D=bla');
+});
+
+test('handle empty object value', t => {
+	t.same(fn.stringify({foo: 'quz', bar: {}}), 'foo=quz');
+});
