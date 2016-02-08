@@ -2,11 +2,12 @@
 
 > Parse and stringify URL [query strings](http://en.wikipedia.org/wiki/Query_string)
 
+Note: this fork brings umd support to [sindresorhus](https://github.com/sindresorhus)/[query-string](https://github.com/sindresorhus/query-string)
 
 ## Install
 
 ```
-$ npm install --save query-string
+$ npm install --save wizbii/query-string
 ```
 
 

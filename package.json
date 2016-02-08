@@ -13,10 +13,12 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "xo && ava"
+    "test": "xo && ava",
+    "build": "webpack"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "umd.js"
   ],
   "keywords": [
     "browser",
@@ -38,6 +40,7 @@
   },
   "devDependencies": {
     "ava": "*",
+    "webpack": "*",
     "xo": "*"
   }
 }
