@@ -1,11 +1,11 @@
 'use strict';
 var strictUriEncode = require('strict-uri-encode');
 
-exports.extract = function (str) {
+exports.extract = function extract(str) {
 	return str.split('?')[1] || '';
 };
 
-exports.parse = function (str) {
+exports.parse = function parse(str) {
 	if (typeof str !== 'string') {
 		return {};
 	}
@@ -48,26 +48,39 @@ exports.parse = function (str) {
 	}, {});
 };
 
-exports.stringify = function (obj) {
-	return obj ? Object.keys(obj).sort().map(function (key) {
-		var val = obj[key];
+exports.stringify = function stringify(obj) {
+	if (!obj) {
+		return '';
+	}
 
-		if (val === undefined) {
-			return '';
-		}
+	return Object.keys(obj)
+		.sort()
+		.map(function (key) {
+			var val = obj[key];
 
-		if (val === null) {
-			return key;
-		}
+			if (val === undefined) {
+				return '';
+			}
 
-		if (Array.isArray(val)) {
-			return val.sort().map(function (val2) {
-				return strictUriEncode(key + '[]') + '=' + strictUriEncode(val2);
-			}).join('&');
-		}
+			if (val === null) {
+				return key;
+			}
 
-		return strictUriEncode(key) + '=' + strictUriEncode(val);
-	}).filter(function (x) {
-		return x.length > 0;
-	}).join('&') : '';
+			if (Array.isArray(val)) {
+				return val
+					.sort()
+					.map(function (val2) {
+						return strictUriEncode(key + '[]') + '=' + strictUriEncode(val2);
+					})
+					.join('&')
+				;
+			}
+
+			return strictUriEncode(key) + '=' + strictUriEncode(val);
+		})
+		.filter(function (x) {
+			return x.length > 0;
+		})
+		.join('&')
+	;
 };
