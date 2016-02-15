@@ -9,11 +9,7 @@ This fork of [sindresorhus](https://github.com/sindresorhus)/[query-string](http
 
 1. **UMD**: there's now a bundled and UMD compatible version available along with the CommonJS one (the file is named `umd.js`)
 2. **Array Notation**: the original array notation was `?foo=bar&foo=baz` and is now `?foo[]=bar&foo[]=baz`
-
-
-### TODO
-
-* [ ] *Objects/Nesting: should be able to parse and stringify `{ foo: 'bar', quz: { baz: 'aze', bam: ['bim'] }}`*
+3. **Nesting**: this implementation supports nesting but please, be aware of the [edge cases](https://github.com/visionmedia/node-querystring/issues).
 
 
 ## Install
@@ -65,23 +61,6 @@ Stringify an object into a query string, sorting the keys.
 ### .extract(*string*)
 
 Extract a query string from a URL that can be passed into `.parse()`.
-
-
-## Nesting
-
-This module intentionally doesn't support nesting as it's not spec'd and varies between implementations, which causes a lot of [edge cases](https://github.com/visionmedia/node-querystring/issues).
-
-You're much better off just converting the object to a JSON string:
-
-```js
-queryString.stringify({
-	foo: 'bar',
-	nested: JSON.stringify({
-		unicorn: 'cake'
-	})
-});
-//=> 'foo=bar&nested=%7B%22unicorn%22%3A%22cake%22%7D'
-```
 
 
 ## License

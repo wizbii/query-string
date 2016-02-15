@@ -53,3 +53,9 @@ test('query strings params including embedded `=`', t => {
 test('query strings params including raw `=`', t => {
 	t.same(fn.parse('?param=http://someurl?id=2837'), {param: 'http://someurl?id=2837'});
 });
+
+test('handle object notation', t => {
+	t.same(fn.parse('foo%5Bbar%5D=quz'), {foo: {bar: 'quz'}});
+	t.same(fn.parse('foo%5Bbar%5D=quz&foo%5Bbaz%5D=aze'), {foo: {bar: 'quz', baz: 'aze'}});
+	t.same(fn.parse('foo%5Bbar%5D=quz&foo%5Bbaz%5D=aze&foo%5Bqwe%5D%5B%5D=bla'), {foo: {bar: 'quz', baz: 'aze', qwe: ['bla']}});
+});

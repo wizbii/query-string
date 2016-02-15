@@ -25,12 +25,60 @@ exports.parse = function parse(str) {
 
 		key = decodeURIComponent(key);
 
-		var arrayRegexp = /\[]$/;
-		var isArray = arrayRegexp.test(key);
-
 		// missing `=` should be `null`:
 		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
 		val = val === undefined ? null : decodeURIComponent(val);
+
+		// is that a stringified object?
+		if (/\[[^\]]+]/g.test(key)) {
+			// get the key names '[bar]', '[baz]', '[]' from 'foo[bar][baz]=quz'
+			var keys = key.match(/\[[^\]]*]/g);
+
+			// extract the actual root key 'foo' from 'foo[bar][baz]=quz'
+			key = key.match(/[^[]+/)[0];
+
+			// init it if it's not yet an object, otherwise conserve it
+			if (typeof ret[key] !== 'object') {
+				ret[key] = {};
+			}
+
+			// reduce is used to recursively go deeper and deeper
+			keys.reduce(function (r, v, index) {
+				// at this point, we already handled the case
+				// of the trailing array
+				if (v === '[]') {
+					return r;
+				}
+
+				// remove the brackets
+				v = v.replace(/^\[|]$/g, '');
+
+				if (index === keys.length - 1) {
+					// if it's the last key from the list,
+					// simply set the value
+					r[v] = val;
+				} else if (keys[index + 1] === '[]') {
+					// if the next key is an array,
+					// we need to know it now to set the value properly
+					if (!Array.isArray(r[v])) {
+						r[v] = [];
+					}
+
+					r[v].push(val);
+				} else if (typeof r[v] !== 'object') {
+					// just iterating over the keys tree
+					r[v] = {};
+				}
+
+				// this is how we're actually going deeper and deeper
+				return r[v];
+			}, ret[key]);
+
+			return ret;
+		}
+
+		var arrayRegexp = /\[]$/;
+		var isArray = arrayRegexp.test(key);
 
 		if (isArray) {
 			key = key.replace(arrayRegexp, '');
